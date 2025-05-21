@@ -1,0 +1,82 @@
+*{
+  margin:0;
+  padding: 0;
+}
+
+body{
+  margin: 0px;
+  padding: 0px;
+  background-image: url('./assets/background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 101%;
+  height: 100vh;
+  width: 100%;
+}
+
+.head{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: Inter;
+  font-size: 48px;
+  font-weight: bold;
+  font-style: italic;
+  color: #def44e;
+  justify-content: space-between;
+  padding-top: 2%;
+  padding-bottom: 2%; 
+}
+
+.logo{
+  margin-left: 8%;
+  cursor: pointer;
+}
+
+h1{
+  margin-right: 30%;
+}
+
+.body{
+  justify-content: space-between;
+}
+
+section{
+  display: flex;
+  justify-content: space-between;
+}
+
+h2{
+  font-size: 48px;
+  font-family: 'IM Fell English';
+  margin-top:8%;
+  margin-left:7%;
+  color: #e5ff00;
+}
+
+ul{
+  list-style-type: none;
+  margin-right: 8%;
+  margin-top: 8%;
+}
+
+ul li{
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 32px;
+  margin-bottom: 30%;
+  padding: 5%;
+  width: 120%;
+  text-align: center;
+  background-color: hsla(66,66%,44%,0.2);
+  border-radius: 5px;
+  color: #c0d02a;
+  font-family: 'Joti One';
+}
+
+ul li:hover{
+  background-color: hsla(66,66%,44%,0);
+  color:#e5ff00;
+  font-size: 34px;
+}
+
