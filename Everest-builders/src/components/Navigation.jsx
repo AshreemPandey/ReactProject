@@ -1,5 +1,5 @@
 export default function List(props){ 
     return(
-        <li>{props.value}</li>
+        <a href={props.link}><li>{props.value}</li></a>
     )
 }
