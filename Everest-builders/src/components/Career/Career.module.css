@@ -1,0 +1,132 @@
+
+
+.careerspage {
+    font-family: "Raleway", sans-serif;
+    text-align: center;
+    background-image: url('../../assets/background2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 170vh;
+    width: 100%;
+    background-size: 242vh;
+    padding:0;
+    margin:0;
+    /* border: 2px solid red; */
+}
+
+/* Header Section */
+.careersheader {
+  /* background: linear-gradient(160deg, #ff6600 0%, #fbff30 100%); */
+  /* padding-top: 2px; */
+  /* position: relative; */
+  height: 4%;
+  margin-bottom: 8%;
+}
+
+.careersheader h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 900;
+    font-size: 5rem;
+    text-align: left;
+    color: #def44e;
+    padding-left: 5%;
+    padding-top: 3%;
+}
+
+@media (max-width: 768px) {
+  .careersheader h1 {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .careersheader h1 {
+    font-size: 2.5rem;
+  }
+}
+
+.wavedivider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top:10px;
+  width: 100%;
+}
+
+/* Each Career Section */
+.careersection {
+  /* padding: 5rem 1rem; */
+  /* background-color: #fff; */
+  /* padding-top: 80px; */
+  background-color: transparent;
+}
+
+.careersection h2 {
+  color: #e5ff00;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 2.5rem;
+  margin-top: 4%;
+}
+
+.divider {
+  width: 80px;
+  height: 6px;
+  background-color: #ffa500;
+  border-radius: 10px;
+  margin: 1.5rem auto 3rem auto;
+}
+
+/* Career Cards */
+.careerlist {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.careercard {
+  background-color: rgb(255, 255, 255, 0.7);
+  box-shadow: 0px 2px 50px 0px rgba(0, 0, 0, 0.09);
+  padding: 2.5rem;
+  border-radius: 20px;
+  max-width: 340px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.careercard:hover {
+  transform: translateY(-5px);
+}
+
+.careercard h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.careercard p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.8em;
+}
+
+.careerbtn {
+  display: block;
+  text-align: center;
+  color: #000;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-top: 2rem;
+  border-radius: 100px;
+  padding: 1rem;
+  background-image: linear-gradient(126deg, #ff6600 0%, #fbff30 100%);
+  transition: opacity 0.2s ease;
+}
+
+.careerbtn:hover {
+  opacity: 0.85;
+}

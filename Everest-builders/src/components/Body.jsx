@@ -1,14 +1,32 @@
-import List from './Navigation'
-import AboutUs from './AboutUs'
 export default function Body(){
+  function CareersList(e) {
+    e.preventDefault();
+    console.log("Clicked careers");
+
+    fetch("http://localhost:8095/careers")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        console.log("Fetched Careers list");
+        return res.json();
+      })
+      .then((data) => {
+          console.log("Careers:", data);
+
+        const section = document.getElementById("careerspage");
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth" });
+        }
+      })
+    .catch((err) => console.error("Error:", err));
+  }
     return(
         <section className="Body">
             <h2>We innovate constructions<br></br>to the heights of Everest</h2>
             <ul>
-                <List value="About Us" link="#AboutUs"/>
-                <List value="Contact Us"/>
-                <List value="Login"/>
-                <List value="Careers"/>
+                <a href="#AboutUs"><li>About Us</li></a>
+                <a href=""><li>"Contact Us</li></a>
+                <a href="#careerspage" onClick={CareersList}><li>Careers</li></a>
+                <a href=""><li>Login</li></a>
             </ul>
         </section>
     )
