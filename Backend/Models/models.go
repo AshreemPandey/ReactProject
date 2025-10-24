@@ -6,3 +6,8 @@ type Career struct {
 	BaseSalary string `boil:"base_salary"`
 	Details    string `boil:"Details"`
 }
+
+type LoginCredentials struct {
+	Username string `boil:"username"`
+	Password string `boil:"password"`
+}

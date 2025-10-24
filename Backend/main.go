@@ -7,8 +7,17 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	_ "Backend/docs"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// @title My API
+// @version 1.0
+// @description This is the API documentation for my backend
+// @host localhost:8095
+// @BasePath /
 func main() {
 	service := &service.Service{}
 	handler := Router.NewHandler(service)
@@ -27,9 +36,12 @@ func main() {
 		AllowHeaders: []string{
 			echo.HeaderOrigin,
 			echo.HeaderAuthorization,
+			echo.HeaderContentType,
 		},
 	}))
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/careers", handler.GetCareers)
+	e.POST("/login", handler.Login)
 	e.Logger.Fatal(e.Start(":8095"))
 }

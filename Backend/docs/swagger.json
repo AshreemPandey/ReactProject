@@ -1,0 +1,41 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/careers": {
+            "get": {
+                "description": "Returns list of careers",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "GetCareers"
+                ],
+                "summary": "Get Careers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.Career"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "service.Career": {
+            "type": "object",
+            "properties": {
+                "position": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
