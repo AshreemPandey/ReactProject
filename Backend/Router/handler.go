@@ -2,8 +2,10 @@ package Router
 
 import (
 	service "Backend/Service"
+	"encoding/base64"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
@@ -41,6 +43,15 @@ func (handler *Handler) GetCareers(e echo.Context) error {
 	return e.JSON(http.StatusOK, careers)
 }
 
+// Hello godoc
+// @Tags Login
+// @Summary User Login
+// @Description Allows user to login
+// @Accept  json
+// @Produce  json
+// @Param login body LoginRequest true "Login Credentials"
+// @Success 200 {object} map[string]interface{}
+// @Router /login [post]
 func (handler *Handler) Login(e echo.Context) error {
 	fmt.Println("In Login Handler")
 	var req LoginRequest
@@ -51,12 +62,20 @@ func (handler *Handler) Login(e echo.Context) error {
 	username := req.Username
 	password := req.Password
 
-	token, err := handler.ServiceLayer.Login(ctx, username, password)
+	token, dashboard, err := handler.ServiceLayer.Login(ctx, username, password)
 	if err != nil {
 		return e.JSON(401, "Unauthorized")
 	}
 
-	return e.JSON(http.StatusOK, map[string]string{
-		"token": token,
+	pdfBytes, err := os.ReadFile(dashboard.Filepath)
+	if err != nil {
+		return e.JSON(500, "Internal Server Error")
+	}
+
+	encodedPDF := base64.StdEncoding.EncodeToString(pdfBytes)
+
+	return e.JSON(http.StatusOK, map[string]interface{}{
+		"token":     token,
+		"dashboard": encodedPDF,
 	})
 }

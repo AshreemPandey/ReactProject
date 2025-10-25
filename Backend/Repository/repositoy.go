@@ -22,3 +22,10 @@ func (repo *Repository) Login(ctx context.Context, username string, password str
 		Password: "password123",
 	}, nil
 }
+
+func (repo *Repository) ShowDashboard(ctx context.Context, username string) (*models.Dashboard, error) {
+	return &models.Dashboard{
+		Username: "ashreem",
+		Filepath: "./Dashboards/dashboard.pdf",
+	}, nil
+}
