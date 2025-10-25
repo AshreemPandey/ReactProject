@@ -1,6 +1,7 @@
 package service
 
 import (
+	models "Backend/Models"
 	repository "Backend/Repository"
 	"context"
 	"errors"
@@ -31,13 +32,13 @@ func (service *Service) Careers(ctx context.Context) (*Career, error) {
 	}, nil
 }
 
-func (service *Service) Login(ctx context.Context, username string, password string) (string, error) {
+func (service *Service) Login(ctx context.Context, username string, password string) (string, *models.Dashboard, error) {
 	credentials, err := service.Repository.Login(ctx, username, password)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 	if credentials.Username != username || credentials.Password != password {
-		return "", errors.New("Invalid login credentials")
+		return "", nil, errors.New("Invalid login credentials")
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -46,9 +47,17 @@ func (service *Service) Login(ctx context.Context, username string, password str
 	})
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {
-		return "", errors.New("Failed to generate token")
+		return "", nil, errors.New("Failed to generate token")
 	}
-	return tokenString, nil
+	dashboard, err := service.showDashboard(ctx, username)
+	if err != nil {
+		return "", nil, errors.New("Failed to fetch dashboard data")
+	}
+	return tokenString, dashboard, nil
+}
+
+func (service *Service) showDashboard(ctx context.Context, username string) (*models.Dashboard, error) {
+	return service.Repository.ShowDashboard(ctx, username)
 }
 
 func (service *Service) VerifyToken(tokenString string) error {
