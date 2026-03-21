@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
@@ -32,31 +33,30 @@ func (service *Service) Careers(ctx context.Context) (*Career, error) {
 	}, nil
 }
 
-func (service *Service) Login(ctx context.Context, username string, password string) (string, *models.Dashboard, error) {
-	credentials, err := service.Repository.Login(ctx, username, password)
+func (service *Service) Login(ctx context.Context, username string, password string) (string, error) {
+	credentials, err := service.Repository.FetchUserDetails(ctx, username)
 	if err != nil {
-		return "", nil, err
+		return "", err
 	}
-	if credentials.Username != username || credentials.Password != password {
-		return "", nil, errors.New("Invalid login credentials")
+	err = bcrypt.CompareHashAndPassword([]byte(credentials.Password), []byte(password))
+	if err != nil {
+		return "", errors.New("invalid login credentials")
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"iat":      time.Now().Unix(),
+		"exp":      time.Now().Add(time.Minute * 5).Unix(),
 	})
 	tokenString, err := token.SignedString(secretKey)
+
 	if err != nil {
-		return "", nil, errors.New("Failed to generate token")
+		return "", errors.New("Failed to generate token")
 	}
-	dashboard, err := service.showDashboard(ctx, username)
-	if err != nil {
-		return "", nil, errors.New("Failed to fetch dashboard data")
-	}
-	return tokenString, dashboard, nil
+	return tokenString, nil
 }
 
-func (service *Service) showDashboard(ctx context.Context, username string) (*models.Dashboard, error) {
+func (service *Service) ShowDashboard(ctx context.Context, username string) (*models.Dashboard, error) {
 	return service.Repository.ShowDashboard(ctx, username)
 }
 
@@ -65,7 +65,7 @@ func (service *Service) VerifyToken(tokenString string) error {
 		return secretKey, nil
 	})
 	if err != nil {
-		return err
+		return errors.New("Failed parsing token")
 	}
 	if !token.Valid {
 		return errors.New("Invalid token")

@@ -1,8 +1,7 @@
 package main
 
 import (
-	"Backend/Router"
-	service "Backend/Service"
+	router "Backend/Router"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -19,9 +18,8 @@ import (
 // @host localhost:8095
 // @BasePath /
 func main() {
-	service := &service.Service{}
-	handler := Router.NewHandler(service)
-	e := echo.New()
+
+	e := router.NewRouter()
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{
@@ -41,7 +39,6 @@ func main() {
 	}))
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	e.GET("/careers", handler.GetCareers)
-	e.POST("/login", handler.Login)
+
 	e.Logger.Fatal(e.Start(":8095"))
 }

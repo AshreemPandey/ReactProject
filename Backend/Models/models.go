@@ -8,12 +8,13 @@ type Career struct {
 }
 
 type LoginCredentials struct {
-	Username string `boil:"username"`
+	UserId   string `boil:"user_id"`
+	UserName string `boil:"user_name"`
 	Password string `boil:"password"`
 }
 
 type Dashboard struct {
-	Username string `boil:"username"`
-	FileName string `boil:"filename"`
-	Filepath string `boil:"filepath"`
+	UserName string `boil:"user_name"`
+	FileName string `boil:"file_name"`
+	FilePath string `boil:"file_path"`
 }
