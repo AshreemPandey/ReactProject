@@ -1,16 +1,18 @@
-package Router
+package Handler
 
 import (
 	service "Backend/Service"
-	"encoding/base64"
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 )
 
-type Handler struct {
+type ERPHandler interface {
+	ShowDashboard(e echo.Context) error
+}
+
+type erpHandler struct {
 	ServiceLayer *service.Service
 }
 
@@ -19,8 +21,8 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-func NewHandler(service *service.Service) *Handler {
-	return &Handler{
+func NewHandler(service *service.Service) ERPHandler {
+	return &erpHandler{
 		ServiceLayer: service,
 	}
 }
@@ -32,7 +34,7 @@ func NewHandler(service *service.Service) *Handler {
 // @Produce  json
 // @Success 200 {object} service.Career
 // @Router /careers [get]
-func (handler *Handler) GetCareers(e echo.Context) error {
+func (handler *erpHandler) GetCareers(e echo.Context) error {
 	//val,err:=service
 	fmt.Println("In GetCareers")
 	ctx := e.Request().Context()
@@ -52,7 +54,7 @@ func (handler *Handler) GetCareers(e echo.Context) error {
 // @Param login body LoginRequest true "Login Credentials"
 // @Success 200 {object} map[string]interface{}
 // @Router /login [post]
-func (handler *Handler) Login(e echo.Context) error {
+func (handler *erpHandler) Login(e echo.Context) error {
 	fmt.Println("In Login Handler")
 	var req LoginRequest
 	if err := e.Bind(&req); err != nil {
@@ -62,20 +64,20 @@ func (handler *Handler) Login(e echo.Context) error {
 	username := req.Username
 	password := req.Password
 
-	token, dashboard, err := handler.ServiceLayer.Login(ctx, username, password)
+	token, err := handler.ServiceLayer.Login(ctx, username, password)
 	if err != nil {
 		return e.JSON(401, "Unauthorized")
 	}
 
-	pdfBytes, err := os.ReadFile(dashboard.Filepath)
+	return e.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
+	})
+}
+
+func (handler *erpHandler) ShowDashboard(e echo.Context) error {
+	_, err := handler.ServiceLayer.ShowDashboard(e.Request().Context(), e.Request().Context().Value("user-id").(string))
 	if err != nil {
 		return e.JSON(500, "Internal Server Error")
 	}
-
-	encodedPDF := base64.StdEncoding.EncodeToString(pdfBytes)
-
-	return e.JSON(http.StatusOK, map[string]interface{}{
-		"token":     token,
-		"dashboard": encodedPDF,
-	})
+	return e.JSON(http.StatusOK, "Dashboard")
 }
